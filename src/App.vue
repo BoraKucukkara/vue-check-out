@@ -58,4 +58,5 @@ body {
 .copyright { position: absolute; bottom:1rem; right:1rem;}
 .copyright a {padding: .3rem; opacity: .7; transition: all .3s;}
 .copyright a:hover {opacity: 1}
+@media screen and (max-width: 767px) {.copyright{top:1rem}}
 </style>

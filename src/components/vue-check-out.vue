@@ -12,8 +12,8 @@
           <path id="Path_1" data-name="Path 1" d="M382.76,318.25a5.857,5.857,0,0,1-5.824,5.824H323.4a5.857,5.857,0,0,1-5.824-5.824V241.418a5.857,5.857,0,0,1,5.824-5.824h53.535a5.819,5.819,0,0,1,5.824,5.824Zm-77.336-76.887V266c0,4.145-2.687,7.672-5.824,7.672H224.448V220.867c0-.336.055-.617.055-.953h75.1c3.137,0,5.824,3.527,5.824,7.672Zm-80.977,97.383V285.937l75.152,0c3.137,0,5.824,3.527,5.824,7.672v38.418c0,4.145-2.687,7.672-5.824,7.672l-75.1,0c0-.336-.055-.617-.055-.953Zm251.44-117.88v52.809H400.735c-3.137,0-5.824-3.527-5.824-7.672V227.585c0-4.145,2.688-7.672,5.824-7.672h75.1c0,.336.055.676.055.953Zm-80.918,97.383V293.608c0-4.145,2.688-7.672,5.824-7.672h75.1v52.809c0,.336-.055.617-.055.953h-75.1c-3.137,0-5.824-3.527-5.824-7.672V318.249ZM264.1,181.279h172.14a39.668,39.668,0,0,1,37.352,26.488H400.736c-8.961,0-16.352,7.281-17.754,16.742a18.177,18.177,0,0,0-6.105-1.121H323.341a18.452,18.452,0,0,0-6.105,1.121c-1.281-9.465-8.676-16.742-17.633-16.742H226.744A39.666,39.666,0,0,1,264.1,181.279ZM436.239,378.4H264.1a39.668,39.668,0,0,1-37.352-26.488H299.6c8.961,0,16.352-7.281,17.754-16.742a18.177,18.177,0,0,0,6.105,1.121H377a18.452,18.452,0,0,0,6.105-1.121c1.344,9.465,8.734,16.742,17.754,16.742h72.855A39.935,39.935,0,0,1,436.238,378.4Z" transform="translate(-224.446 -181.279)"/>
         </svg>
 
-        <label for="cc-cname">Name on Card</label>
-        <input id="cc-name"
+        <label>Name on Card</label>
+        <input
                type="text"
                autocapitalize="on"
                autofocus
@@ -21,9 +21,10 @@
                spellcheck="false"
                class="credit-card_name"
                placeholder="NAME SURNAME"
+               onkeyup="this.value = this.value.toUpperCase();"
                v-model="cardData.name">
 
-        <label for="cc-number">Credit card number</label>
+        <label>Credit card number</label>
         <div class="credit-card_numbers">
           <input
               ref="num"
@@ -168,6 +169,7 @@ export default {
 </script>
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500&display=swap');
+
 
 .checkout-container {
   background: #e5e5e5;
@@ -377,15 +379,27 @@ img {width: 90%}
   .checkout-container {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: center;
+    background: transparent;
     align-items: center;
     padding: 1rem;
-    width: 80vw;
-    height: 90dvh;
+    width: 100vw;
+    height: 100vh;
   }
   .credit-card_body {
-    top: 0;
+    top:0;
   }
-  img {width: 70vw}
+  img {width: 50vw}
+  input {padding: .3rem}
+  input:focus {
+    padding: .3rem;
+  }
+  .product {
+    width: 100vw;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center
+  }
 }
 </style>
