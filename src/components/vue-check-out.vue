@@ -111,9 +111,9 @@ export default {
         cvv: ""
       },
       numHolder:[
-        {name: "aaaa", numb: "1234"},
-        {name: "bbbb", numb: "3245"},
-        {name: "cccc", numb: "2343"},
+        {name: "aaaa", numb: ""},
+        {name: "bbbb", numb: ""},
+        {name: "cccc", numb: ""},
         {name: "dddd", numb: ""}
       ],
       dateHolder:{MM:"",YY:""},
