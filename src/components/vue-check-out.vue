@@ -183,7 +183,7 @@ export default {
 .credit-card_body {
   position: relative;
   perspective: 100rem;
-  top: -4rem;
+  top:-3rem;
   --duration: .3s;
 }
 

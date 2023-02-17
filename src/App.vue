@@ -52,7 +52,7 @@ body {
   align-items: center;
   justify-content: center;
   width: 100vw;
-  height: 100dvh;
+  height: 100vh;
   color:#666;
 }
 .copyright { position: absolute; bottom:1rem; right:1rem;}
