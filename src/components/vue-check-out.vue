@@ -22,7 +22,8 @@
                class="credit-card_name"
                placeholder="NAME SURNAME"
                onkeyup="this.value = this.value.toUpperCase();"
-               v-model="cardData.name">
+               v-model="cardData.name"
+               required>
 
         <label>Credit card number</label>
         <div class="credit-card_numbers">
@@ -30,6 +31,7 @@
               ref="num"
               type="tel"
               maxlength="4"
+              minlength="4"
               placeholder="0000"
               spellcheck="false"
               v-for="(num, index) in numHolder"
@@ -37,24 +39,39 @@
               @change="cardNumber"
               v-model="this.numHolder[index].numb"
               @focus="$event.target.select()"
-              :key="index">
+              :key="index"
+              required>
         </div>
 
         <label>Expiration Date</label>
-        <input ref="date"
-               type="tel"
-               maxlength="5"
-               class="credit-card_date"
-               @input="()=>{dateSplitter(); flipBack()}"
-               v-model="cardData.date"
-               placeholder="MM/YY">
-        <svg v-show="readyToFlip" class="input-confirm" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-          <path d="M243.8 339.8C232.9 350.7 215.1 350.7 204.2 339.8L140.2 275.8C129.3 264.9 129.3 247.1 140.2 236.2C151.1 225.3 168.9 225.3 179.8 236.2L224 280.4L332.2 172.2C343.1 161.3 360.9 161.3 371.8 172.2C382.7 183.1 382.7 200.9 371.8 211.8L243.8 339.8zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z"/>
-        </svg>
+        <div class="card-date-holder">
+          <input ref="dateMM"
+                 type="tel"
+                 maxlength="2"
+                 class="credit-card_date"
+                 @input="dateCatch()"
+                 placeholder="MM"
+                 v-model="dateHolder.MM"
+                 required>
+          <input ref="dateYY"
+                 type="tel"
+                 maxlength="2"
+                 @input="dateCatch()"
+                 class="credit-card_date"
+                 placeholder="YY"
+                 v-model="dateHolder.YY"
+                 required>
+        </div>
+
+        <div class="card-form-check" v-show="readyToFlip">
+          <svg  class="input-confirm" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <path d="M243.8 339.8C232.9 350.7 215.1 350.7 204.2 339.8L140.2 275.8C129.3 264.9 129.3 247.1 140.2 236.2C151.1 225.3 168.9 225.3 179.8 236.2L224 280.4L332.2 172.2C343.1 161.3 360.9 161.3 371.8 172.2C382.7 183.1 382.7 200.9 371.8 211.8L243.8 339.8zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z"/>
+          </svg>
+          <button v-show="cardData.cvv.length !== 3" type="button" class="btn-enter-cvv" @click="flipBack()">Enter CVV</button>
+        </div>
       </div>
       <div class="credit-card_back_side"
            :class="{'card-show_back_side': cardFlip.front, 'card-flip_left': cardFlip.back}">
-
         <svg class="card-chip" xmlns="http://www.w3.org/2000/svg" fill="#999" width="251.445" height="197.12" viewBox="0 0 251.445 197.12">
           <path id="Path_1" data-name="Path 1" d="M382.76,318.25a5.857,5.857,0,0,1-5.824,5.824H323.4a5.857,5.857,0,0,1-5.824-5.824V241.418a5.857,5.857,0,0,1,5.824-5.824h53.535a5.819,5.819,0,0,1,5.824,5.824Zm-77.336-76.887V266c0,4.145-2.687,7.672-5.824,7.672H224.448V220.867c0-.336.055-.617.055-.953h75.1c3.137,0,5.824,3.527,5.824,7.672Zm-80.977,97.383V285.937l75.152,0c3.137,0,5.824,3.527,5.824,7.672v38.418c0,4.145-2.687,7.672-5.824,7.672l-75.1,0c0-.336-.055-.617-.055-.953Zm251.44-117.88v52.809H400.735c-3.137,0-5.824-3.527-5.824-7.672V227.585c0-4.145,2.688-7.672,5.824-7.672h75.1c0,.336.055.676.055.953Zm-80.918,97.383V293.608c0-4.145,2.688-7.672,5.824-7.672h75.1v52.809c0,.336-.055.617-.055.953h-75.1c-3.137,0-5.824-3.527-5.824-7.672V318.249ZM264.1,181.279h172.14a39.668,39.668,0,0,1,37.352,26.488H400.736c-8.961,0-16.352,7.281-17.754,16.742a18.177,18.177,0,0,0-6.105-1.121H323.341a18.452,18.452,0,0,0-6.105,1.121c-1.281-9.465-8.676-16.742-17.633-16.742H226.744A39.666,39.666,0,0,1,264.1,181.279ZM436.239,378.4H264.1a39.668,39.668,0,0,1-37.352-26.488H299.6c8.961,0,16.352-7.281,17.754-16.742a18.177,18.177,0,0,0,6.105,1.121H377a18.452,18.452,0,0,0,6.105-1.121c1.344,9.465,8.734,16.742,17.754,16.742h72.855A39.935,39.935,0,0,1,436.238,378.4Z" transform="translate(-224.446 -181.279)"/>
         </svg>
@@ -64,13 +81,15 @@
             v-model="cardData.cvv"
             maxlength="3"
             type="tel"
-            @input="flipFront()"
             class="credit-card_cvv"
-            placeholder="CVV">
+            placeholder="CVV"
+            @input="flipFront()">
 
-        <svg v-show="cardData.cvv.length >= 3" class="input-confirm" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-          <path d="M243.8 339.8C232.9 350.7 215.1 350.7 204.2 339.8L140.2 275.8C129.3 264.9 129.3 247.1 140.2 236.2C151.1 225.3 168.9 225.3 179.8 236.2L224 280.4L332.2 172.2C343.1 161.3 360.9 161.3 371.8 172.2C382.7 183.1 382.7 200.9 371.8 211.8L243.8 339.8zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z"/>
-        </svg>
+        <div class="card-form-check" v-show="cardData.cvv.length >= 3">
+          <svg  class="input-confirm" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <path d="M243.8 339.8C232.9 350.7 215.1 350.7 204.2 339.8L140.2 275.8C129.3 264.9 129.3 247.1 140.2 236.2C151.1 225.3 168.9 225.3 179.8 236.2L224 280.4L332.2 172.2C343.1 161.3 360.9 161.3 371.8 172.2C382.7 183.1 382.7 200.9 371.8 211.8L243.8 339.8zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z"/>
+          </svg>
+        </div>
 
       </div>
       <div class="credit-card_payment_buttons">
@@ -92,11 +111,12 @@ export default {
         cvv: ""
       },
       numHolder:[
-        {name: "aaaa", numb: ""},
-        {name: "bbbb", numb: ""},
-        {name: "cccc", numb: ""},
+        {name: "aaaa", numb: "1234"},
+        {name: "bbbb", numb: "3245"},
+        {name: "cccc", numb: "2343"},
         {name: "dddd", numb: ""}
       ],
+      dateHolder:{MM:"",YY:""},
       cardFlip: {
         front: null,
         back: null,
@@ -109,13 +129,13 @@ export default {
       if(index < 3 && this.numHolder[index].numb.length >= 4) {
         this.$refs.num[index + 1].focus()
       } else if(index === 3 && this.numHolder[index].numb.length >= 4) {
-        this.$refs.date.focus()
+        this.$refs.dateMM.focus()
+
       }
     },
     flipBack() {
       let i = this.cardData
-      if(i.name && i.number.length >= 16 && i.date.length >= 5 ) {
-        this.readyToFlip = true
+      if(i.name && i.number.length >= 16 && i.date.length >= 4) {
         this.cardFlipper()
         this.$refs.cvv.focus()
       }
@@ -123,16 +143,17 @@ export default {
     flipFront() {
       let i = this.cardData
       if (i.cvv.length >= 3) {
-        this.cardFlipper()
+        setTimeout(()=>{this.cardFlipper()},750)
       }
     },
-    dateSplitter() {
-      if(this.cardData.date.length === 2) {
-        this.cardData.date = this.cardData.date + "/"
+    dateCatch() {
+      if(this.dateHolder.MM.length === 2 && this.dateHolder.YY.length === 2) {
+        this.cardData.date = this.dateHolder.MM + this.dateHolder.YY
+      } else if (this.dateHolder.MM.length === 2 && this.dateHolder.YY === "") {
+        this.$refs.dateYY.focus()
       }
     },
     cardFlipper() {
-      setTimeout(()=>{
         if(this.cardFlip.front) {
           this.cardFlip.front = false
           this.cardFlip.back = true
@@ -140,7 +161,6 @@ export default {
           this.cardFlip.front = true
           this.cardFlip.back = false
         }
-      },700)
     },
     cardNumber() {
       this.cardData.number = this.numHolder[0].numb + this.numHolder[1].numb + this.numHolder[2].numb + this.numHolder[3].numb
@@ -154,6 +174,8 @@ export default {
       this.numHolder[1].numb = ""
       this.numHolder[2].numb = ""
       this.numHolder[3].numb = ""
+      this.dateHolder.MM = ""
+      this.dateHolder.YY = ""
       this.readyToFlip = false
     }
   },
@@ -162,7 +184,18 @@ export default {
   },
   computed: {
     readyToCheckout(){
-      return !!(this.cardData.number.length >= 16 && this.cardData.name.length && this.cardData.date.length >= 5 && this.cardData.cvv.length >= 3)
+      return !!(this.cardData.number.length >= 16 && this.cardData.name.length && this.cardData.date.length >= 4 && this.cardData.cvv.length >= 3)
+    }
+  },
+  watch: {
+    cardData: {
+      handler() {
+        if (this.cardData.number.length >= 16 && this.cardData.name.length >= 4 && this.cardData.date.length >= 4) {
+          this.readyToFlip = true
+        } else {
+          this.readyToFlip = false
+        }
+      }, deep: true
     }
   }
 }
@@ -249,8 +282,12 @@ export default {
   z-index: -1;
   background: linear-gradient(47deg, rgba(29, 18, 59, 0.34) 0%, rgba(252,0,255,0) 55%, rgba(108, 96, 126, 0.53) 100%);
 }
+.card-date-holder {
+  display: flex;
+  justify-content: start;
+}
 .credit-card_date {
-  width: 7rem !important;
+  width: 4rem !important;
 }
 .product p {
   font-size: 2rem;
@@ -356,19 +393,28 @@ button {
   transition: all .2s;
   background: #ccc;
   font-size: 1.1rem;
-
 }
-
 .btn-confirm {background: #7a7a7a; color:#fff;}
 .btn-active {background: #f36a09;}
 .btn-active:hover {background: #ff8900;box-shadow: 0 0 .3rem #fc6100AA}
 .input-confirm {
-  position:absolute;
-  right:1rem;
   bottom:1.5rem;
   fill: #39e80a;
   width: 2rem;
   animation: check .2s forwards;
+}
+.btn-enter-cvv {
+  padding: .5rem 1rem;
+  margin-left:.5rem;
+  font-size: .9rem;
+  background: #f36a09;
+  color:#fff;
+}
+.card-form-check {
+  position: absolute;
+  right: 1rem;
+  display: flex;
+  justify-content: end;
 }
 @keyframes check {
   from {opacity: 0}

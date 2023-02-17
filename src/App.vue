@@ -24,7 +24,7 @@ export default {
   data() {
     return {
       product: {
-        name: "Nike Air Jordon",
+        name: "Nike Air Jordan",
         price:"299",
         currency:"$",
         image:"sneaker.png"}
