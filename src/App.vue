@@ -41,7 +41,6 @@ export default {
   box-sizing: border-box;
   margin: 0;
   transition: all .1s;
-  border:1px solid red;
 }
 h1, p {
   margin-bottom: 1rem;
