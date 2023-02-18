@@ -41,6 +41,7 @@ export default {
   box-sizing: border-box;
   margin: 0;
   transition: all .1s;
+  border:1px solid red;
 }
 h1, p {
   margin-bottom: 1rem;
@@ -55,7 +56,7 @@ body {
   height: 100vh;
   color:#666;
 }
-.copyright { position: absolute; bottom:1rem; right:1rem;}
+.copyright { position: absolute; bottom:1rem; right:1rem; height: 2rem;}
 .copyright a {padding: .3rem; opacity: .7; transition: all .3s;}
 .copyright a:hover {opacity: 1}
 @media screen and (max-width: 767px) {.copyright{top:1rem}}
